@@ -63,7 +63,7 @@ export default function Home() {
           <span className="flex flex-col items-center p-16 gap-2">
             <CameraIcon className="w-[40px] h-[40px] text-white" />
           </span>
-          <div className="absolute right-2 top-1/2 -translate-y-1/2 -z-10 flex flex-col gap-2 w-1/2">
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 -z-10 flex flex-col gap-2 w-1/2 max-w-[500px]">
             <div className="overflow-clip w-full border-white border-4 rounded-md">
               <motion.img
                 src="/container.png"

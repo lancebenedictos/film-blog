@@ -1,113 +1,262 @@
-import Image from 'next/image'
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+
+import {
+  CameraIcon,
+  Clover,
+  Flower2,
+  Heart,
+  Instagram,
+  Leaf,
+  MapPin,
+  Sprout,
+} from "lucide-react";
+import { useRef, useState } from "react";
+
+const containerTransition = {
+  staggerChildren: 0.05,
+};
+
+const waveText =
+  "Film by Paula • @filmbypaula_ • Toronto • Papershoot • ".split("");
 
 export default function Home() {
+  const firstSectionRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: firstSectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  const sec1Images = [
+    "/sec1-1.png",
+    "/sec1-2.png",
+    "/sec1-3.png",
+    "/0.jpg",
+    "/5.jpg",
+  ];
+  const xOutputRange = `-${(sec1Images.length - 1) * 100}%`;
+  const scale = useTransform(scrollYProgress, [0, 0.6], [1, 1.5]);
+  const x = useTransform(scrollYProgress, [0, 0.5], ["0%", xOutputRange]);
+
+  const range = (from: number, to: number, step: number) =>
+    [...Array(Math.floor((to - from) / step) + 1)].map(
+      (_, i) => from + i * step
+    );
+  const layerOne = range(0, 10, 1);
+  const layerTwo = range(10, 19, 1);
+  const layerThree = range(20, 29, 1);
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+    <motion.div className={`relative min-h-screen `}>
+      <nav className="flex justify-around fixed w-full p-4 top-0 bg-red-300  z-50">
+        <a
+          href="https://www.instagram.com/filmbypaula_/"
+          target="_blank"
+          className="flex gap-2 text-white font-semibold"
+        >
+          <Instagram />
+          <p>@filmbypaula_</p>
+        </a>
+      </nav>
+      <header className="h-[100vh] w-full relative bg-red-300  ">
+        <div className=" absolute h-full top-0 w-full z-10 flex flex-col">
+          <span className="flex flex-col items-center p-16 gap-2">
+            <CameraIcon className="w-[40px] h-[40px] text-white" />
+          </span>
+          <div className="absolute right-2 top-1/2 -translate-y-1/2 -z-10 flex flex-col gap-2 w-1/2">
+            <div className="overflow-clip w-full border-white border-4 rounded-md">
+              <motion.img
+                src="/container.png"
+                alt="Container in stakt market"
+                className="  w-full "
+                initial={{ scale: 1.5 }}
+                animate={{ scale: 1 }}
+                transition={{ duration: 0.5, delay: 5 }}
+              />
+            </div>
+            <span className="flex gap-2">
+              <MapPin />
+              <p>Stackt Market</p>
+            </span>
+          </div>
+          <div className="mt-auto flex justify-around pb-4">
+            <Flower2 />
+            <Leaf />
+            <Clover />
+            <Sprout />
+            <Heart />
+            <CameraIcon />
+            <Flower2 />
+            <Leaf />
+            <Clover />
+            <Sprout />
+            <Heart />
+            <CameraIcon />
+          </div>
+
+          <svg
+            viewBox="0 0 975 75"
+            xmlns="http://www.w3.org/2000/svg"
+            className=" overflow-visible pt-1/2 absolute top-1/2 -translate-y-1/2"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
+            <path
+              d="M1 60.9999C407 328 437 -161 1000 60.9999"
+              id="curve"
+              fill="transparent"
+              className="w-full"
             />
-          </a>
+            <motion.text transition={containerTransition}>
+              {waveText.map((word, index) => (
+                <motion.textPath
+                  id="text-path"
+                  href="#curve"
+                  startOffset={0}
+                  initial={{ startOffset: "100%" }}
+                  animate={{ startOffset: "-50%" }}
+                  transition={{
+                    duration: 6,
+                    repeat: Infinity,
+                    ease: "linear",
+                    delay: (6 / waveText.length) * index,
+                    repeatDelay: 0,
+                  }}
+                  className=" text-2xl prevent-select mix-blend-overlay z-20"
+                  key={index}
+                >
+                  {word}
+                </motion.textPath>
+              ))}
+            </motion.text>
+          </svg>
         </div>
-      </div>
+      </header>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+      <main>
+        <section className="h-[500vh] relative " ref={firstSectionRef}>
+          {/* view port */}
+          <motion.div
+            className="h-[90vh] w-full sticky flex justify-center items-center  overflow-x-hidden top-0 left-0  mb-auto"
+            // style={{ position }}
+          >
+            <motion.div
+              className=" w-[500px] aspect-video  flex relative z-20"
+              style={{ scale }}
+            >
+              {sec1Images.map((path, index) => (
+                <motion.span
+                  key={index}
+                  style={{ x }}
+                  className="shrink-0 w-full h-full flex flex-col"
+                >
+                  <span className="bg-black w-full flex justify-around py-1 ">
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>{" "}
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>{" "}
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>{" "}
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                  </span>
+                  <motion.img
+                    src={path}
+                    className=" object-cover px-4 bg-black aspect-video"
+                  />
+                  <span className="bg-black w-full flex justify-around py-1 ">
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                    <span className="bg-white h-6 w-3 block rounded-sm"></span>
+                  </span>
+                </motion.span>
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+        <section>
+          <motion.div className=" w-full h-[100vh] my-auto left-0 z-10 flex flex-col justify-around gap-4 overflow-hidden pt-20">
+            <motion.div
+              className="flex gap-4 h-1/5 items-center"
+              initial={{ x: "0%" }}
+              animate={{ x: "-100%" }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "linear",
+                repeatDelay: 0,
+              }}
+            >
+              {layerOne.map((num) => (
+                <motion.img
+                  key={num}
+                  src={`/${num}.jpg`}
+                  className=" object-cover aspect-video h-full shrink-0"
+                />
+              ))}
+            </motion.div>
 
-      <div className="mb-32 grid text-center lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+            <motion.div
+              className="flex gap-4 h-1/5 items-center"
+              initial={{ x: "-80%" }}
+              animate={{ x: "0%" }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "linear",
+                repeatDelay: 0,
+              }}
+            >
+              {layerTwo.map((num, index) => (
+                <motion.img
+                  key={num}
+                  src={`/${num}.jpg`}
+                  className=" object-cover aspect-video h-full shrink-0"
+                />
+              ))}
+            </motion.div>
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+            <motion.div
+              className="flex gap-4 h-1/5 items-center"
+              initial={{ x: "0%" }}
+              animate={{ x: "-100%" }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "linear",
+                repeatDelay: 0,
+              }}
+            >
+              {layerThree.map((num) => (
+                <motion.img
+                  key={num}
+                  src={`/${num}.jpg`}
+                  className=" object-cover aspect-video h-full shrink-0"
+                />
+              ))}
+            </motion.div>
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore the Next.js 13 playground.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  )
+            <motion.div
+              className="flex gap-4 h-1/5 items-center"
+              initial={{ x: "-80%" }}
+              animate={{ x: "0%" }}
+              transition={{
+                duration: 5,
+                repeat: Infinity,
+                ease: "linear",
+                repeatDelay: 0,
+              }}
+            >
+              {layerOne.map((num) => (
+                <motion.img
+                  key={num}
+                  src={`/${num}.jpg`}
+                  className=" object-cover aspect-video h-full shrink-0"
+                />
+              ))}
+            </motion.div>
+          </motion.div>
+        </section>
+      </main>
+    </motion.div>
+  );
 }
